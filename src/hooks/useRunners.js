@@ -18,7 +18,7 @@ const useRunners = () => {
             if (newSigner === signer) return;
             setSigner(newSigner);
         });
-    }, [provider, signer]);
+    }, [provider]);
     return { provider, signer, readOnlyProvider: jsonRpcProvider };
 };
 
