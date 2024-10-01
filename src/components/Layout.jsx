@@ -15,7 +15,9 @@ const Layout = ({ children }) => {
                 </Box>
                 <w3m-button />
             </Flex>
-            <Box as="main">{children}</Box>
+            <Box as="main" className="p-4">
+                {children}
+            </Box>
             <ToastContainer />
         </Container>
     );

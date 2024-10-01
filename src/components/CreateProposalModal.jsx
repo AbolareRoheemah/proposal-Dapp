@@ -9,7 +9,7 @@ const CreateProposalModal = () => {
         description: "",
         recipient: "",
         amount: "",
-        deadline: "",
+        duration: "",
         minVote: 2,
     });
 
@@ -17,7 +17,7 @@ const CreateProposalModal = () => {
         setState((preState) => ({ ...preState, [name]: e.target.value }));
     };
 
-    const { amount, deadline, description, minVote, recipient } = state;
+    const { amount, duration, description, minVote, recipient } = state;
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild>
@@ -83,14 +83,14 @@ const CreateProposalModal = () => {
                             className="text-violet11 w-[90px] text-right text-[15px]"
                             htmlFor="username"
                         >
-                            Deadline
+                            Duration
                         </label>
                         <input
                             className="text-violet11 shadow-violet7 focus:shadow-violet8 inline-flex h-[35px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
                             id="username"
                             type="text"
-                            value={deadline}
-                            onChange={(e) => handleInputChange("deadline", e)}
+                            value={duration}
+                            onChange={(e) => handleInputChange("duration", e)}
                         />
                     </fieldset>
                     <fieldset className="mb-[15px] flex items-center gap-5">
@@ -116,7 +116,7 @@ const CreateProposalModal = () => {
                                     description,
                                     recipient,
                                     amount,
-                                    deadline,
+                                    duration,
                                     minVote
                                 )
                             }
