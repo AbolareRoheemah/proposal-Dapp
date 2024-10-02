@@ -16,7 +16,7 @@ const useContract = (withSigner = false) => {
             );
         }
         return new Contract(
-            import.meta.env.VITE_APPKIT_PROJECT_ID,
+            import.meta.env.VITE_CONTRACT_ADDRESS,
             ABI,
             readOnlyProvider
         );
