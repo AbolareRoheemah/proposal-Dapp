@@ -1,10 +1,12 @@
 import { XCircleIcon } from "@heroicons/react/16/solid";
 import * as Dialog from "@radix-ui/react-dialog";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import useCreateProposal from "../hooks/useCreateProposal";
+import { GlobalStateContext } from "../context/GlobalContext";
 
 const CreateProposalModal = () => {
     const handleCreateProposal = useCreateProposal();
+    const {loading} = useContext(GlobalStateContext)
     const [state, setState] = useState({
         description: "",
         recipient: "",
@@ -21,8 +23,8 @@ const CreateProposalModal = () => {
     return (
         <Dialog.Root>
             <Dialog.Trigger asChild>
-                <button className="bg-blue-500 p-4 text-white shadow-md rounded-md">
-                    Create Proposal
+                <button className="bg-slate-500 p-4 text-white shadow-md rounded-md">
+                Create Proposal
                 </button>
             </Dialog.Trigger>
             <Dialog.Portal>
@@ -121,7 +123,7 @@ const CreateProposalModal = () => {
                                 )
                             }
                         >
-                            Create
+                            {loading ? 'Loading...': 'Create'}
                         </button>
                     </div>
                     <Dialog.Close asChild>
