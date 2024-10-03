@@ -16,6 +16,7 @@ const multicallAbi = [
 function App() {
     const readOnlyProposalContract = useContract();
     const { readOnlyProvider } = useRunners();
+    const contract = new Contract(import.meta.env.VITE_CONTRACT_ADDRESS, ABI, readOnlyProvider)
     const [proposals, setProposals] = useState([]);
     const [proposalId, setProposalId] = useState([]);
 
@@ -82,7 +83,6 @@ function App() {
     }, [readOnlyProposalContract, readOnlyProvider]);
 
     const onProposalCreated = (proposalId, desc, to, amt, votingDeadline, minVotesToPass) => {
-        console.log("newwww", proposalId, desc, to, amt, votingDeadline, minVotesToPass)
         setProposals((prevProposal) => ([...prevProposal, {
             description: desc,
             amount: amt,
@@ -95,11 +95,29 @@ function App() {
         setProposalId(proposalId);
         
     }
+    const onVoted = (proposalId, voter) => {
+        setProposalId(proposalId);
+        console.log("vote event", voter, proposalId)
+        setProposals((prevProposals) => 
+            prevProposals.map(prev => {
+                if (prev.id === Number(proposalId)) {
+                    return { ...prev, voteCount: prev.voteCount + 1 };
+                }
+                return prev;
+            })
+        );
+    }
 
     useEffect(() => {
         fetchProposals();
-        if (!readOnlyProposalContract) return
-        readOnlyProposalContract.on("ProposalCreated", onProposalCreated)
+        if (!contract) return
+        contract.on("ProposalCreated", onProposalCreated)
+        contract.on("Voted", onVoted)
+
+        return () => {
+            contract.removeListener("ProposalCreated")
+            contract.removeListener("Voted")
+        }
     }, [fetchProposals]);
 
     return (

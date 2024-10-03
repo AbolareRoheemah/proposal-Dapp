@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Text } from "@radix-ui/themes";
 import { formatEther } from "ethers";
 import useVote from "../hooks/useVote";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 const Proposal = ({
     description,
@@ -13,8 +13,10 @@ const Proposal = ({
     id,
     loadingState
 }) => {
-    const handleVote = useVote()
-    const currentId = 1;
+    const [currentId, setCurrentId] = useState(null);
+    const handleVote = useVote();
+
+    const isLoading = loadingState && currentId === id;
 
     return (
         <Box className="bg-blue-400 rounded-md shadow-sm p-4 w-96">
@@ -47,8 +49,8 @@ const Proposal = ({
                     <Text className="font-bold">{String(executed)}</Text>
                 </Flex>
             </Box>
-            <Button className="bg-slate-500 text-white font-bold w-full mt-4 p-4 rounded-md shadow-sm" onClick={() => {handleVote(id); currentId++}}>
-                {loadingState && currentId === id ? 'Loading...': 'Vote'}
+            <Button className="bg-slate-500 text-white font-bold w-full mt-4 p-4 rounded-md shadow-sm" onClick={() => {handleVote(id); setCurrentId(id)}}>
+                {isLoading ? 'Loading...' : 'Vote'}
             </Button>
         </Box>
     );
