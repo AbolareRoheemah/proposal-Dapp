@@ -63,7 +63,7 @@ const useCreateProposal = () => {
                 );
                 const reciept = await tx.wait();
 
-                console.log("recipt", reciept)
+                // console.log("recipt", reciept)
 
                 if (reciept.status === 1) {
                     setLoading(false)

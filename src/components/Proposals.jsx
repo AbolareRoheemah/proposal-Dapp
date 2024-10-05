@@ -13,12 +13,14 @@ const Proposals = ({ proposals }) => {
             ) : (
                 proposals.map(
                     ({
+                        id,
                         deadline,
                         minRequiredVote,
                         amount,
                         description,
                         executed,
-                        votecount,
+                        voteCount,
+                        canExecute
                     }, index) => (
                         <Proposal
                             key={`${deadline}${minRequiredVote}`}
@@ -27,9 +29,9 @@ const Proposals = ({ proposals }) => {
                             description={description}
                             executed={executed}
                             minRequiredVote={minRequiredVote}
-                            votecount={votecount}
-                            id={index + 1}
-                            loadingState={voteLoading}
+                            voteCount={voteCount}
+                            id={id}
+                            canExecute={canExecute}
                         />
                     )
                 )

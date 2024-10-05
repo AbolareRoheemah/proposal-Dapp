@@ -7,38 +7,38 @@ import { liskSepoliaNetwork } from "../connection";
 import { GlobalStateContext } from "../context/GlobalContext";
 import { parseEther } from "ethers";
 
-const useVote = () => {
+const useExecute= () => {
     const contract = useContract(true);
     const { address } = useAppKitAccount();
     const { chainId } = useAppKitNetwork();
-    const [voteLoading, setVoteLoading] = useState(false)
+    const [canExecuteLoading, setCanExecuteLoading] = useState(false)
     const [canExecute, setCanExecute] = useState(false)
     
-    const vote = useCallback(
+    const execute = useCallback(
         async (_proposalId) => {
-            setVoteLoading(true)
+            setCanExecuteLoading(true)
             if (!address) {
-                setVoteLoading(false)
+                setCanExecuteLoading(false)
                 toast.error("Connect your wallet!");
                 return;
             }
             if (Number(chainId) !== liskSepoliaNetwork.chainId) {
-                setVoteLoading(false)
+                setCanExecuteLoading(false)
                 toast.error("You are not connected to the right network");
                 return;
             }
 
             if (!contract) {
-                setVoteLoading(false)
+                setCanExecuteLoading(false)
                 toast.error("Cannot get contract!");
                 return;
             }
 
             try {
-                const estimatedGas = await contract.vote.estimateGas(
+                const estimatedGas = await contract.executeProposal.estimateGas(
                     _proposalId
                 );
-                const tx = await contract.vote(
+                const tx = await contract.executeProposal(
                     _proposalId,
                     {
                         gasLimit: (estimatedGas * BigInt(120)) / BigInt(100),
@@ -47,23 +47,22 @@ const useVote = () => {
                 const reciept = await tx.wait();
 
                 if (reciept.status === 1) {
-                    setVoteLoading(false)
-                    toast.success("Vote successful");
-                    
+                    setCanExecuteLoading(false)
+                    toast.success("Executesuccessful");
                     return;
                 }
-                toast.error("Vote failed");
-                setVoteLoading(false)
+                toast.error("Executefailed");
+                setCanExecuteLoading(false)
                 return;
             } catch (error) {
-                console.error("error while voting: ", error);
-                setVoteLoading(false)
-                toast.error("Voting errored");
+                console.error("error while executing: ", error);
+                setCanExecuteLoading(false)
+                toast.error(error.reason);
             }
         },
         [address, chainId, contract]
     );
-    return {voteLoading, vote}
+    return {canExecute, execute, canExecuteLoading}
 };
 
-export default useVote;
+export default useExecute;

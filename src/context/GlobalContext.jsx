@@ -5,10 +5,10 @@ export const GlobalStateContext = createContext();
 
 export const GlobalStateProvider = ({ children }) => {
     const [loading, setLoading] = useState(false)
-    const [voteLoading, setVoteLoading] = useState(false)
+ 
 
     return (
-        <GlobalStateContext.Provider value={{ loading, setLoading, voteLoading, setVoteLoading}}>
+        <GlobalStateContext.Provider value={{ loading, setLoading}}>
             {children}
         </GlobalStateContext.Provider>
     );
